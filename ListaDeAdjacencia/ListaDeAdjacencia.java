@@ -173,7 +173,17 @@ class Grafo {
     }
 
     public void depthFirstSearch(int start) {
+        Vertice initial = this.vertices.get(start);
+        initial.setVisited(true);
+        System.out.println(initial.getLabel());
         
+        for (int i = 0; i < initial.getEdges().size(); i++) {
+            Vertice actually = initial.getEdges().get(i).getNext();
+
+            if (actually.getVisited() == false) {
+                depthFirstSearch(actually.getLabel());
+            }
+        }
     }
 }
 
@@ -187,6 +197,8 @@ public class ListaDeAdjacencia {
         grafo.inserir(2, 3, 0.1);
         grafo.inserir(4, 2, 0.6);
         grafo.inserir(4, 3, 0.7);
-        grafo.breadthFirstSearch(4);
+        // grafo.breadthFirstSearch(4);
+        // grafo.depthFirstSearch(0);
+        // grafo.depthFirstSearchQueue(0);
     }
 } 

@@ -103,18 +103,28 @@ class Grafo {
         return this.numArestas;
     }
 
+    public List<Integer> getLabels() {
+        List<Integer> v = new ArrayList<Integer>();
+        
+        for (int i = 0; i < this.vertices.size(); i++) {
+            v.add(this.vertices.get(i).getLabel());
+        }
+
+        return v;
+    }
+
     public void inserir(int v1, int v2, double peso) {
         // Verificar se vertice1 já existe no grafo, se não existir criar
-        Vertice aux1 = this.procurarVertice(v1, peso);
+        Vertice aux1 = this.procurarVertice(v1);
 
         // Verificar se vertice2 já existe no grafo, se não existir criar
-        Vertice aux2 = this.procurarVertice(v2, peso);
+        Vertice aux2 = this.procurarVertice(v2);
 
         // Obrigatoriamente pegar os vertices da lista para fazer a ligação entre eles
         this.ligarArestas(aux1, aux2, peso);
     }
 
-    public Vertice procurarVertice(int v1, double peso) {
+    public Vertice procurarVertice(int v1) {
         for (int i = 0; i < this.vertices.size(); i++) {
             // Se ele encontrar o vertice dentro da lista, apenas retorna-lo
             if (this.vertices.get(i).getLabel() == v1) {
@@ -148,27 +158,33 @@ class Grafo {
     }
 
     public void breadthFirstSearch(int start) {
-        List<Vertice> fila = new ArrayList<Vertice>();
-        Vertice initial = this.vertices.get(start);
-        initial.setVisited(true); // Marcar o vertice inicial como visitado
-        System.out.println(initial.getLabel());
-        fila.add(initial);
+        // Verificar se o vertice de inicio existe
+        if (this.getLabels().contains(start)) {
+            List<Vertice> fila = new ArrayList<Vertice>();
+            // Vertice initial = this.vertices.get(start);
+            Vertice initial = this.procurarVertice(start);
+            initial.setVisited(true); // Marcar o vertice inicial como visitado
+            System.out.println(initial.getLabel());
+            fila.add(initial);
 
-        while(fila.size() > 0) {
-            Vertice currently = fila.get(0); // Pegar o primeiro vertice da fila
+            while(fila.size() > 0) {
+                Vertice currently = fila.get(0); // Pegar o primeiro vertice da fila
 
-            for (int i = 0; i < currently.getEdges().size(); i++) {
-                Vertice adjacent = currently.getEdges().get(i).getNext();
+                for (int i = 0; i < currently.getEdges().size(); i++) {
+                    Vertice adjacent = currently.getEdges().get(i).getNext();
 
-                // Se o vertice não foi visitado, marca-lo
-                if (adjacent.getVisited() == false) {
-                    System.out.println(adjacent.getLabel());
-                    adjacent.setVisited(true);
-                    fila.add(adjacent); // Adicionar o vertice a minha lista para visita-lo depois
+                    // Se o vertice não foi visitado, marca-lo
+                    if (adjacent.getVisited() == false) {
+                        System.out.println(adjacent.getLabel());
+                        adjacent.setVisited(true);
+                        fila.add(adjacent); // Adicionar o vertice a minha lista para visita-lo depois
+                    }
+
                 }
-
+                fila.remove(0);
             }
-            fila.remove(0);
+        } else {
+            System.out.println("O vertice { " + start + " } nao existe.");
         }
     }
 
@@ -207,7 +223,6 @@ class Grafo {
                 }
             }
         }
-
     }
 }
 
@@ -215,13 +230,19 @@ public class ListaDeAdjacencia {
     public static void main(String[] args) {
         Grafo grafo = new Grafo();
     
-        grafo.inserir(0, 1, 0.5);
-        grafo.inserir(0, 2, 0.3);
-        grafo.inserir(1, 3, 0.2);
+        grafo.inserir(0, 1, 0.2);
+        grafo.inserir(0, 4, 0.1);
+        grafo.inserir(2, 0, 0.4);
+        grafo.inserir(2, 4, 0.2);
         grafo.inserir(2, 3, 0.1);
-        grafo.inserir(4, 2, 0.6);
-        grafo.inserir(4, 3, 0.7);
-        // grafo.breadthFirstSearch(4);
+        grafo.inserir(3, 4, 0.1);
+        grafo.inserir(3, 5, 0.2);
+        grafo.inserir(4, 1, 0.3);
+        grafo.inserir(4, 5, 0.2);
+        grafo.inserir(5, 1, 0.4);
+        
+        grafo.print();
+        grafo.breadthFirstSearch(3);
         // grafo.depthFirstSearch(0);
         // grafo.depthFirstSearchQueue(0);
     }

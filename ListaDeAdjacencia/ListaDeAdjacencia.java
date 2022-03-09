@@ -161,7 +161,6 @@ class Grafo {
         // Verificar se o vertice de inicio existe
         if (this.getLabels().contains(start)) {
             List<Vertice> fila = new ArrayList<Vertice>();
-            // Vertice initial = this.vertices.get(start);
             Vertice initial = this.procurarVertice(start);
             initial.setVisited(true); // Marcar o vertice inicial como visitado
             System.out.println(initial.getLabel());
@@ -189,15 +188,18 @@ class Grafo {
     }
 
     public void depthFirstSearch(int start) {
-        Vertice initial = this.vertices.get(start);
-        initial.setVisited(true);
-        System.out.println(initial.getLabel());
-        
-        for (int i = 0; i < initial.getEdges().size(); i++) {
-            Vertice actually = initial.getEdges().get(i).getNext();
+        // Verificar se o vertice de inicio existe
+        if (this.getLabels().contains(start)) {
+            Vertice initial = this.procurarVertice(start);
+            initial.setVisited(true);
+            System.out.println(initial.getLabel());
+            
+            for (int i = 0; i < initial.getEdges().size(); i++) {
+                Vertice actually = initial.getEdges().get(i).getNext();
 
-            if (actually.getVisited() == false) {
-                depthFirstSearch(actually.getLabel());
+                if (actually.getVisited() == false) {
+                    depthFirstSearch(actually.getLabel());
+                }
             }
         }
     }
@@ -242,8 +244,8 @@ public class ListaDeAdjacencia {
         grafo.inserir(5, 1, 0.4);
         
         grafo.print();
-        grafo.breadthFirstSearch(3);
-        // grafo.depthFirstSearch(0);
+        // grafo.breadthFirstSearch(4);
+        grafo.depthFirstSearch(2);
         // grafo.depthFirstSearchQueue(0);
     }
 } 

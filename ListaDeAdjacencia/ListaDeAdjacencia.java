@@ -185,6 +185,30 @@ class Grafo {
             }
         }
     }
+
+    public void depthFirstSearchQueue(int start) {
+        List<Vertice> pilha = new ArrayList<Vertice>();
+        Vertice initial = this.vertices.get(start);
+        pilha.add(initial);
+
+        while (pilha.size() > 0) {
+            Vertice actually = pilha.remove(pilha.size() - 1);
+            System.out.println(actually.getLabel());
+
+            if (actually.getVisited() == false ) {
+                actually.setVisited(true); // Marcar como visitado
+
+                for (int i = 0; i < actually.getEdges().size(); i++) {
+                    Vertice adjacent = actually.getEdges().get(i).getNext();
+
+                    if (adjacent.getVisited() == false) {
+                        pilha.add(adjacent);
+                    }
+                }
+            }
+        }
+
+    }
 }
 
 public class ListaDeAdjacencia {

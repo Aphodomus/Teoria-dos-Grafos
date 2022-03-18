@@ -1,30 +1,27 @@
 #include <iostream>
-#include "ListaDupla.h"
 #include "ListaSimples.h"
 #include "Vertice.h"
-#include "Fila.h"
-#include "Pilha.h"
+#include "Aresta.h"
 
 using namespace std;
 
 class Grafo {
     public:
         // Atributos
-        ListaDupla<Vertice> *vertices;
-        int numVertices;
-        int numArestas;
+         ListaDupla<Vertice> *vertices;
+         int numVertices;
+         int numArestas;
 
-        // Metodos especiais
-        Grafo() {
-            this->vertices = new ListaDupla<Vertice>();
-            this->numVertices = 0;
-            this->numArestas = 0;
-        }
+         // Metodos especiais
+         Grafo() {
+             this->vertices = new ListaDupla<Vertice>();
+             this->numVertices = 0;
+             this->numArestas = 0;
+         }
 
         int getNumVertices() {
             return this->numVertices;
-        }
-
+        }  
         int getNumArestas() {
             return this->numArestas;
         }
@@ -56,28 +53,25 @@ class Grafo {
             return vertice1;
         }
 
-        //void inserir(int v1, int v2, double peso) {
-        //    // Verificar se vertice1 já existe no grafo, se não existir criar
-        //    Vertice aux1 = this->procurarVertice(v1);
-//
-        //    // Verificar se vertice2 já existe no grafo, se não existir criar
-        //    Vertice aux2 = this->procurarVertice(v2);
-//
-        //    // Obrigatoriamente pegar os vertices da lista para fazer a ligação entre eles
-        //    this->ligarArestas(aux)
-        //}
+        void ligarVertices(int v1, int v2, double peso) {
+            // Verificar se vertice1 já existe no grafo, se não existir criar
+            Vertice aux1 = this->procurarVertice(v1);
+
+            // Verificar se vertice2 já existe no grafo, se não existir criar
+            Vertice aux2 = this->procurarVertice(v2);
+
+            // Obrigatoriamente pegar os vertices da lista para fazer a ligação entre eles
+            this->ligarArestas(aux1, aux2, peso);
+        }
+
+        void ligarArestas(Vertice v1, Vertice v2, double peso) {
+            v1.getEdges()->inserir();
+        }
 };
 
 int main() {
-    ListaSimples<Vertice> lista = ListaSimples<Vertice>();
-
-    lista.inserir(2);
-    lista.inserir(4);
-    lista.inserir(1);
-    lista.inserir(7);
-    lista.inserir(9);
-    lista.inserir(0);
-
-    lista.print();
+    Grafo grafo = Grafo();
+    grafo.ligarVertices(3, 2, 0.45);
+    
     return 0;
 };

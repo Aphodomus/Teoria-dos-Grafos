@@ -1,7 +1,7 @@
 #include <iostream>
 #include "../datastructures/ListaSimples.h"
 
-
+// Vertice que contem uma lista de inteiros (vertices que ele esta ligado)
 class VerticeInt {
     public:
         int label;
@@ -32,6 +32,7 @@ class VerticeInt {
         }
 };
 
+// Estrutura principal que vai conter o grafo e todas as suas operações
 class Grafo {
     public:
         ListaSimples<VerticeInt> *vertices;
@@ -49,7 +50,7 @@ class Grafo {
             this->procurarVertice(v1);
         }
 
-        void conetarVertices(int v1, int v2) {
+        void conectarVertices(int v1, int v2) {
             // Verificar se vertice v1 existe, se nao cria-lo e inserir no grafo
             VerticeInt aux1 = this->procurarVertice(v1);
 
@@ -95,10 +96,10 @@ class Grafo {
 int main() {
     Grafo grafo = Grafo();
     grafo.inserirVerticeIsolado(5);
-    grafo.conetarVertices(1, 2);
-    grafo.conetarVertices(1, 4);
-    grafo.conetarVertices(4, 3);
-    grafo.conetarVertices(5, 6);
+    grafo.conectarVertices(1, 2);
+    grafo.conectarVertices(1, 4);
+    grafo.conectarVertices(4, 3);
+    grafo.conectarVertices(5, 6);
     grafo.print();
 
     return 0;

@@ -14,7 +14,7 @@ class ListaSimples {
         Celula<T> *ultimo;
 
         // Metodos especiais
-        ListaSimples() {
+        ListaSimples<T>() {
             this->primeiro = new Celula<T>();
             this->ultimo = this->primeiro;
         }

@@ -4,7 +4,7 @@
 #include <iostream>
 using namespace std;
 
-template <class T>
+template <typename T>
 class Celula {
     public:
         // Atributos

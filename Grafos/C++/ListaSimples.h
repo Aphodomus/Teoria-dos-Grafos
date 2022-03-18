@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "Celula.h"
+#include <string> 
 using namespace std;
 
 template <class T>
@@ -163,13 +164,6 @@ class ListaSimples {
             }
 
             return result;
-        }
-
-        void print() {
-            for (Celula<T> *i = this->primeiro->prox; i != nullptr; i = i->prox) {
-                cout << i->value << endl;
-            }
-            cout << endl;
         }
 
         bool contains(T value) {

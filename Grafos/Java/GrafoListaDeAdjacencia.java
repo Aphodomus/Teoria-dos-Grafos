@@ -228,7 +228,7 @@ class Grafo {
     }
 }
 
-public class ListaDeAdjacencia {
+public class GrafoListaDeAdjacencia {
     public static void main(String[] args) {
         Grafo grafo = new Grafo();
     
@@ -245,7 +245,7 @@ public class ListaDeAdjacencia {
         
         grafo.print();
         // grafo.breadthFirstSearch(4);
-        grafo.depthFirstSearch(2);
+        // grafo.depthFirstSearch(2);
         // grafo.depthFirstSearchQueue(0);
     }
 }

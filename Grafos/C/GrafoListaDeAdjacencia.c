@@ -2,7 +2,7 @@
 
 ===== Lista de adjacencia =====
 
-- As buscas sao mais rapidas com as listas de adjacencia
+- Os caminhamentos são mais rápidos com as listas de adjacencia
 - O espaço ocupado por uma lista de adjacencia e proporcional ao tamanho do grafo (V + A).
 - Para grafos esparsos, uma boa representacao e a lista de adjacencia.
 - Operacoes que tenham como base um caminho de um vertice a outro (buscas).

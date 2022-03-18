@@ -1,0 +1,43 @@
+======= Estrutura escolhida =======
+• Lista de adjacência
+
+======= Motivação =================
+• As matrizes de adjacência tem um tempo de pesquisa muito superior as listas de adjacência. Por exemplo,
+para verificar se um vértice (5) tem uma adjacência com um vértice (9) basta verificar na matriz o índice [5, 9],
+ou seja, complexidade O(1). Por outro lado, na lista de adjacência você precisa percorrer toda a lista de vértices
+de um vértice específico para verificar se existe a adjacência entre eles, com complexidade O(n). Em resumo, quando
+o assunto é pesquisa a matriz de adjacência é superiores a lista de adjacência.
+
+• Outra vantagem da matriz de adjacência é adicionar uma aresta entre dois vértices, pois basta alterar o valor na posição
+[i, j], enquanto na lista você precisa percorrer a lista para verificar se o vértice não existe nela e depois adicionar no
+final, tendo complexidade O(n).
+
+• Mas, em relação a flexibilidade de adicionar novos vértices a lista de adjacência se sobressai sobre a matriz de adjacência,
+pois enquanto na lista de adjacência se você tiver um ponteiro para o último elemento da lista você gasta O(1) para adicionar
+um vértice no grafo, na matriz de adjacência você precisa copiar toda matriz de tamanho NxN para uma nova matriz de tamanho
+N+1 x N+1, o que é muito custodo em termo de complexidade O(n^2). No que diz respeito a espaço a lista de adjacência também é 
+muito mais eficiente e menos custosa, pois em problemas do mundo real a maioria dos grafos são esparsos (possui poucas arestas
+em relacao ao numero de vertices, ou muito menos arestas do que o número máximo de arestas possíveis), e como as matrizes tem 
+tamanho N, independentemente de termos apenas algumas arestas ou o número máximo de arestas ela vai ocupar o mesmo espaço, ou
+seja, ocupa espaço desnecessário. Já na lista de adjacência esse problema não acontece, ela cria e armazena apenas as relações
+entre arestas que realmente existem no grafo.
+
+• Conclusão, as listas de adjacência são mais diretas e dinâmicas para problemas de caso geral, sendo flexiveis e de fácil 
+entendimento e legibilidade do código.
+
+======= Implementação ===============
+• Todos os grafos implementados são flexiveis em relação ao número de vértices e arestas, usando Lista Simples. Para Grafos
+Ponderados foi utilizado uma estrutura Aresta, contendo um peso e um ponteiro para um vértice que ela vai apontar. Para Grafos
+Não Ponderados foi utilizado uma lista de inteiros representando os vértices para os quais um vértice aponta.
+
+======= Lógica da estrutura =========
+• um Grafo vai possuir uma Lista de Vértices. Para cada Vértice desta Lista de Vértices vai conter uma Lista de Arestas, e
+cada aresta vai conter um ponteiro para outro Vértice.
+
+• A estrutura Grafo além de conter uma Lista de Vértices vai conter uma atributo para saber o número de vértices e o número
+de arestas no Grafo.
+
+• A estrutura Vertice além de conter uma Lista de Arestas vai conter um label representando o valor deste vértice e um grau
+para saber o grau do vértice.
+
+• A estrutura Aresta vai conter um peso e um ponteiro para um Vértice.

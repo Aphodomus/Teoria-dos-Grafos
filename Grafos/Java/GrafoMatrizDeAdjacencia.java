@@ -15,6 +15,14 @@ class Grafo {
         matrizBooleano = new boolean[numVertices][numVertices];
     }
 
+    public int getNumVertices() {
+        return this.numVertices;
+    }
+
+    public int getNumArestas() {
+        return this.numArestas;
+    }
+
     // Nao ponderado
     public boolean inserir(int origem, int destino) {
         if (origem > numVertices || origem < 0 || destino > numVertices || destino < 0) {
@@ -117,7 +125,7 @@ class Grafo {
 public class GrafoMatrizDeAdjacencia {
     public static void main(String[] args) {
         // Construtor (numVertices, direcionado, ponderado)
-        Grafo grafo = new Grafo(4, true, true);
+        Grafo grafo = new Grafo(4, true, false);
 
         grafo.inserir(0, 1, 0.45);
         grafo.inserir(2, 3, 0.34);

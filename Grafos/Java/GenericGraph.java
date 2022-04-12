@@ -1,69 +1,69 @@
 import java.util.ArrayList;
 import java.util.List;
 
-class Edge {
-    private Vertex next;
-    private double weight;
+class Edge <T, U> {
+    private Vertex<T, U> next;
+    private U weight;
 
     Edge() {
         this.next = null;
     }
 
-    Edge(Vertex destination, double weight) {
+    Edge(Vertex<T, U> destination, U weight) {
         this.weight = weight;
         this.next = destination;
     }
 
-    Edge(Vertex destination) {
+    Edge(Vertex<T, U> destination) {
         this.next = destination;
     }
 
-    Edge(double weight) {
+    Edge(U weight) {
         this.weight = weight;
         this.next = null;
     }
 
-    public double getWeight() {
+    public U getWeight() {
         return this.weight;
     }
 
-    public void setWeight(double weight) {
+    public void setWeight(U weight) {
         this.weight = weight;
     }
 
-    public Vertex getNext() {
+    public Vertex<T, U> getNext() {
         return this.next;
     }
 
-    public void setNext(Vertex destination) {
+    public void setNext(Vertex<T, U> destination) {
         this.next = destination;
     } 
 }
 
-class Vertex {
-    private int label;
+class Vertex <T, U> {
+    private T label;
     private int degree;
     private boolean visited;
-    private List<Edge> edges;
-    private Vertex precedent;
-    private double distance;
+    private List<Edge<T, U>> edges;
+    private Vertex<T, U> precedent;
+    private U distance;
 
-    Vertex (int label) {
+    Vertex (T label) {
         this.label = label;
-        this.edges = new ArrayList<Edge>();
+        this.edges = new ArrayList<Edge<T, U>>();
         this.degree = 0;
         this.visited = false;
     }
 
-    public int getLabel() {
+    public T getLabel() {
         return this.label;
     }
 
-    public void setLabel(int label) {
+    public void setLabel(T label) {
         this.label = label;
     }
 
-    public List<Edge> getEdges() {
+    public List<Edge<T, U>> getEdges() {
         return this.edges;
     }
 
@@ -82,33 +82,17 @@ class Vertex {
     public void setVisited(boolean visited) {
         this.visited = visited;
     }
-
-    public void setDistance(double distance) {
-        this.distance = distance;
-    }
-
-    public double getDistance() {
-        return this.distance;
-    }
-
-    public void setPrecedent(Vertex precedent) {
-        this.precedent = precedent;
-    }
-
-    public Vertex getPrecedent() {
-        return this.precedent;
-    }
 }
 
-class Graph  {
-    private List<Vertex> vertexes;
+class Graph <T, U> {
+    private List<Vertex<T, U>> vertexes;
     private int numberOfVertex;
     private int numberOfEdges;
     private boolean directed;
     private boolean weighted;
 
     Graph(boolean directed, boolean weighted) {
-        this.vertexes = new ArrayList<Vertex>();
+        this.vertexes = new ArrayList<Vertex<T, U>>();
         this.numberOfVertex = 0;
         this.numberOfEdges = 0;
         this.directed = directed;
@@ -123,8 +107,8 @@ class Graph  {
         return this.numberOfEdges;
     }
 
-    public List<Integer> getLabels() {
-        List<Integer> v = new ArrayList<Integer>();
+    public List<T> getLabels() {
+        List<T> v = new ArrayList<T>();
         
         for (int i = 0; i < this.vertexes.size(); i++) {
             v.add(this.vertexes.get(i).getLabel());
@@ -133,19 +117,19 @@ class Graph  {
         return v;
     }
 
-    public void createVertex(int v1) {
+    public void createVertex(T v1) {
         if (!this.getLabels().contains(v1)) {
-            Vertex vertex = new Vertex(v1);
+            Vertex<T, U> vertex = new Vertex<T, U>(v1);
             this.vertexes.add(vertex);
             numberOfVertex++;
         }
     }
 
-    public void connect(int v1, int v2, double peso) {
+    public void connect(T v1, T v2, U peso) {
         if (this.weighted) {
             // Search for vertexes, if they don't exist create them
-            Vertex aux1 = this.searchVertex(v1);
-            Vertex aux2 = this.searchVertex(v2);
+            Vertex<T, U> aux1 = this.searchVertex(v1);
+            Vertex<T, U> aux2 = this.searchVertex(v2);
 
             this.connectVertex(aux1, aux2, peso);
         } else {
@@ -153,11 +137,11 @@ class Graph  {
         }
     }
 
-    public void connect(int v1, int v2) {
+    public void connect(T v1, T v2) {
         if (!this.weighted) {
             // Search for vertexes, if they don't exist create them
-            Vertex aux1 = this.searchVertex(v1);
-            Vertex aux2 = this.searchVertex(v2);
+            Vertex<T, U> aux1 = this.searchVertex(v1);
+            Vertex<T, U> aux2 = this.searchVertex(v2);
 
             this.connectVertex(aux1, aux2);
         } else {
@@ -165,7 +149,7 @@ class Graph  {
         }
     }
 
-    public Vertex searchVertex(int v1) {
+    public Vertex<T, U> searchVertex(T v1) {
         for (int i = 0; i < this.vertexes.size(); i++) {
             // If it finds vertex within the list, it just returns it
             if (this.vertexes.get(i).getLabel() == v1) {
@@ -174,48 +158,48 @@ class Graph  {
         }
 
         // If you can't find vertex, create it
-        Vertex vertex = new Vertex(v1);
+        Vertex<T, U> vertex = new Vertex<T, U>(v1);
         this.vertexes.add(vertex);
         numberOfVertex++;
 
         return vertex;
     }
 
-    public void connectVertex(Vertex v1, Vertex v2, double peso) {
+    public void connectVertex(Vertex<T, U> v1, Vertex<T, U> v2, U peso) {
         if (this.directed) {
             if (!this.existAdjacent(v1, v2, peso)) {
-                v1.getEdges().add(new Edge(v2, peso));
+                v1.getEdges().add(new Edge<T, U>(v2, peso));
                 v1.increaseDegree();
                 this.numberOfEdges++;
             }
         } else {
             if (!this.existAdjacent(v1, v2, peso)) {
-                v1.getEdges().add(new Edge(v2, peso));
-                v2.getEdges().add(new Edge(v1, peso));
+                v1.getEdges().add(new Edge<T, U>(v2, peso));
+                v2.getEdges().add(new Edge<T, U>(v1, peso));
                 v1.increaseDegree();
                 this.numberOfEdges++;
             }
         }
     }
 
-    public void connectVertex(Vertex v1, Vertex v2) {
+    public void connectVertex(Vertex<T, U> v1, Vertex<T, U> v2) {
         if (this.directed) {
             if (!this.existAdjacent(v1, v2)) {
-                v1.getEdges().add(new Edge(v2));
+                v1.getEdges().add(new Edge<T, U>(v2));
                 v1.increaseDegree();
                 this.numberOfEdges++;
             }
         } else {
             if (!this.existAdjacent(v1, v2)) {
-                v1.getEdges().add(new Edge(v2));
-                v2.getEdges().add(new Edge(v1));
+                v1.getEdges().add(new Edge<T, U>(v2));
+                v2.getEdges().add(new Edge<T, U>(v1));
                 v1.increaseDegree();
                 this.numberOfEdges++;
             }
         }
     }
 
-    public boolean existAdjacent(Vertex v1, Vertex v2) {
+    public boolean existAdjacent(Vertex<T, U> v1, Vertex<T, U> v2) {
         for (int i = 0; i < this.vertexes.size(); i++) {
             if (this.vertexes.get(i).getLabel() == v1.getLabel()) {
                 for (int j = 0; j < this.vertexes.get(i).getEdges().size(); j++) {
@@ -230,7 +214,7 @@ class Graph  {
         return false;
     }
 
-    public boolean existAdjacent(Vertex v1, Vertex v2, double peso) {
+    public boolean existAdjacent(Vertex<T, U> v1, Vertex<T, U> v2, U peso) {
         for (int i = 0; i < this.vertexes.size(); i++) {
             if (this.vertexes.get(i).getLabel() == v1.getLabel()) {
                 for (int j = 0; j < this.vertexes.get(i).getEdges().size(); j++) {
@@ -251,17 +235,17 @@ class Graph  {
         System.out.println("\n====== Graph ======\n");
 
         if (this.weighted == true) {
-            for (Vertex v: vertexes) {
+            for (Vertex<T, U> v: vertexes) {
                 System.out.print("Vertex: " + v.getLabel() + " -> ");
-                for (Edge e: v.getEdges()) {
+                for (Edge<T, U> e: v.getEdges()) {
                     System.out.print("[" + e.getNext().getLabel() + ", " + e.getWeight() + "]   ");
                 }
                 System.out.println("\n");
             }
         } else {
-            for (Vertex v: vertexes) {
+            for (Vertex<T, U> v: vertexes) {
                 System.out.print("Vertex: " + v.getLabel() + " -> ");
-                for (Edge e: v.getEdges()) {
+                for (Edge<T, U> e: v.getEdges()) {
                     System.out.print("[" + e.getNext().getLabel() + "]   ");
                 }
                 System.out.println("\n");
@@ -271,20 +255,20 @@ class Graph  {
         System.out.println("====== End ======\n");
     }
 
-    public void breadthFirstSearch(int start) {
+    public void breadthFirstSearch(T start) {
         // Check if starting vertex exists
         if (this.getLabels().contains(start)) {
-            List<Vertex> fila = new ArrayList<Vertex>();
-            Vertex initial = this.searchVertex(start);
+            List<Vertex<T, U>> fila = new ArrayList<Vertex<T, U>>();
+            Vertex<T, U> initial = this.searchVertex(start);
             initial.setVisited(true); // Mark initial vertex as visited
             System.out.println(initial.getLabel());
             fila.add(initial);
 
             while(fila.size() > 0) {
-                Vertex currently = fila.get(0); // Get the first vertex in the queue
+                Vertex<T, U> currently = fila.get(0); // Get the first vertex in the queue
 
                 for (int i = 0; i < currently.getEdges().size(); i++) {
-                    Vertex adjacent = currently.getEdges().get(i).getNext();
+                    Vertex<T, U> adjacent = currently.getEdges().get(i).getNext();
 
                     // If vertex has not been visited, mark it
                     if (adjacent.getVisited() == false) {
@@ -297,44 +281,44 @@ class Graph  {
                 fila.remove(0);
             }
         } else {
-            System.out.println("[ERROR]: The vertex { " + start + " } doesn't exist.");
+            System.out.println("[ERROR]: the vertex { " + start + " } doesn't exist.");
         }
     }
 
-    public void depthFirstSearch(int start) {
+    public void depthFirstSearch(T start) {
         // Check if starting vertex exists
         if (this.getLabels().contains(start)) {
-            Vertex initial = this.searchVertex(start);
+            Vertex<T, U> initial = this.searchVertex(start);
             initial.setVisited(true);
             System.out.println(initial.getLabel());
             
             for (int i = 0; i < initial.getEdges().size(); i++) {
-                Vertex actually = initial.getEdges().get(i).getNext();
+                Vertex<T, U> actually = initial.getEdges().get(i).getNext();
 
                 if (actually.getVisited() == false) {
                     depthFirstSearch(actually.getLabel());
                 }
             }
         } else {
-            System.out.println("[ERROR]: The vertex { " + start + " } doesn't exist.");
+            System.out.println("[ERROR]: the vertex { " + start + " } doesn't exist.");
         }
     }
 
-    public void depthFirstSearchQueue(int start) {
+    public void depthFirstSearchQueue(T start) {
         if (this.getLabels().contains(start)) {
-            List<Vertex> pilha = new ArrayList<Vertex>();
-            Vertex initial = this.searchVertex(start);
+            List<Vertex<T, U>> pilha = new ArrayList<Vertex<T, U>>();
+            Vertex<T, U> initial = this.searchVertex(start);
             pilha.add(initial);
 
             while (pilha.size() > 0) {
-                Vertex actually = pilha.remove(pilha.size() - 1);
+                Vertex<T, U> actually = pilha.remove(pilha.size() - 1);
                 System.out.println(actually.getLabel());
 
                 if (actually.getVisited() == false ) {
                     actually.setVisited(true); // Marcar como visitado
 
                     for (int i = 0; i < actually.getEdges().size(); i++) {
-                        Vertex adjacent = actually.getEdges().get(i).getNext();
+                        Vertex<T, U> adjacent = actually.getEdges().get(i).getNext();
 
                         if (adjacent.getVisited() == false) {
                             pilha.add(adjacent);
@@ -343,11 +327,13 @@ class Graph  {
                 }
             }
         } else {
-            System.out.println("[ERROR]: The vertex { " + start + " } doesn't exist.");
+            System.out.println("[ERROR]: the vertex { " + start + " } doesn't exist.");
         }
     }
 
     public boolean existNegativeEdge() {
+        U edgeType = this.vertexes.get(0).getEdges().get(0).getWeight();
+        
         for (int i = 0; i < this.numberOfVertex; i++) {
             for (int j = 0; j < this.vertexes.get(i).getEdges().size(); j++) {
                 if (this.vertexes.get(i).getEdges().get(j).getWeight() < 0) {
@@ -355,50 +341,40 @@ class Graph  {
                 }
             }
         }
+        
 
         return false;
     }
 
-    public void setDistanceInfinity() {
-        for (int i = 0; i < this.numberOfVertex; i++) {
-            this.vertexes.get(i).setDistance(Double.POSITIVE_INFINITY);
-        }
-    }
-
-    public void Dikjstra(int init) {
+    public void Dikjstra(T init) {
         if (this.weighted) {
-            if (!this.existNegativeEdge()) {
-                this.setDistanceInfinity(); // Set all distances vertex to infinity
-                this.searchVertex(init).setDistance(0); // Set distance of initial vertex to 0;
-
-                List<Integer> vertexOpen = this.getLabels();
-                
-                while (vertexOpen.size() > 0) {
-                    
-                }
+            U edgeType = this.vertexes.get(0).getEdges().get(0).getWeight();
+            this.existNegativeEdge();
+            if (edgeType.getClass() == Integer.class) {
+                System.out.println("yep");
             } else {
-                System.out.println("[ERROR]: The graph can't have edges with negative weights");
+                System.out.println("nop");
             }
         } else {
-            System.out.println("[ERROR]: The graph isn't weighted");
+            System.out.println("[ERROR]: the graph isn't weighted");
         }
     }
 }
 
-public class GraphAdjacencyList {
+public class GenericGraph {
     public static void main(String[] args) {
         // Params: (Directed, Weighted)
-        Graph graph = new Graph(true, true);
-        graph.connect(0, 1, 0.3);
-        graph.connect(0, 4, 0.2);
-        graph.connect(2, 4, 0.1);
-        graph.connect(2, 0, -0.4);
-        graph.connect(2, 3, 0.3);
-        graph.connect(4, 1, 0.6);
-        graph.connect(4, 5, 0.1);
-        graph.connect(3, 4, 0.2);
-        graph.connect(3, 5, 0.8);
-        graph.connect(5, 1, 0.5);
+        GraphAdjacencyList<Integer, String> graph = new GraphAdjacencyList<Integer, String>(true, true);
+        graph.connect(0, 1, "Mals");
+        graph.connect(0, 4, "Whale");
+        graph.connect(2, 4, "Balon");
+        graph.connect(2, 0, "Alquer");
+        graph.connect(2, 3, "Four");
+        graph.connect(4, 1, "Ther");
+        graph.connect(4, 5, "Qhuer");
+        graph.connect(3, 4, "Xawl");
+        graph.connect(3, 5, "Cosh");
+        graph.connect(5, 1, "Pows");
         
         graph.Dikjstra(0);
     }

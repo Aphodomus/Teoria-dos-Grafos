@@ -98,16 +98,18 @@ class List {
                 return;
             }
 
-            Node<T>* node = new Node<T>();
-
-            for (node = this->head; node != nullptr; node = node->next) {
-                cout << node->data << "\t";
+            Node<T>* temp = head;
+            while(temp != nullptr){
+                cout << temp->data << "\t";
+                temp = temp->next;
             }
+
+            cout<<endl;
         }
 
         int length(){
             int len = 0;
-            Node<int>* temp = this->head;
+            Node<T>* temp = this->head;
 
             while (temp != nullptr){
                 len++;
@@ -115,6 +117,21 @@ class List {
             }
 
             return len;
+        }
+
+        bool contains(T value) {
+            bool resp = false;
+            Node<T>* temp = this->head;
+
+            while (temp != nullptr){
+                if (temp->data == value) {
+                    resp = true;
+                    break;
+                }
+                temp = temp->next;
+            }
+
+            return resp;
         }
 
         void remove(){
@@ -180,19 +197,19 @@ class List {
         }
 
         T get(int index){
+            T value = T();
             if (this->head == nullptr){
                 cout << "[ERROR]: List is empty" << endl;
-                return nullptr;
+                return value;
             }
 
             if (index > this->length() || index < 0){
                 cout << "[ERROR]: Index out of bound!" << endl;
-                return nullptr;
+                return value;
             }
 
             if (index == 0){
-                this->removeFront();
-                return this->head->data;
+                return head->data;
             }
 
             int count = 0;

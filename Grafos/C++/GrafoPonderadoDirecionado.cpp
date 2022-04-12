@@ -130,6 +130,14 @@ class Grafo {
             return *v2;
         }
 
+        void addVertice(int v1) {
+            if (this->vertices->contains(v1)) {
+                return;
+            }
+            Vertice* v2 = new Vertice(v1);
+            this->vertices->add(*v2);
+        }
+
         void ligarVertices(int v1, int v2, double peso) {
             // Verificar se vertice1 já existe no grafo, se não existir criar
             Vertice aux1 = this->procurarVertice(v1);
@@ -142,10 +150,24 @@ class Grafo {
         }
 
         void ligarArestas(Vertice v1, Vertice v2, double weight) {
-            Aresta* aux = new Aresta(v2, weight);
-            v1.getEdges()->add(*aux);
-            v1.increaseDegree();
-            numArestas++;
+            // Aresta* aux = new Aresta(v2, weight);
+            // v1.getEdges()->add(*aux);
+            // v1.increaseDegree();
+            // numArestas++;
+        }
+
+        void print() {
+            this->vertices->print();
         }
 
 };
+
+int main() {
+    Grafo* grafo = new Grafo();
+    // grafo->addVertice(1);
+    // grafo->addVertice(2);
+    // grafo->addVertice(3);
+    // grafo->addVertice(4);
+
+    // grafo->print();
+}

@@ -2,7 +2,6 @@
 #define ARESTA_H
 
 #include <iostream>
-#include "ListaDupla.h"
 #include "Vertice.h"
 
 class Vertice;
@@ -48,6 +47,10 @@ class Aresta {
 
         void setNext(Vertice *dest) {
             this->next = dest;
+        }
+
+        bool operator==(const Aresta &aresta) const {
+            return aresta.weight == this->weight;
         }
 };
 

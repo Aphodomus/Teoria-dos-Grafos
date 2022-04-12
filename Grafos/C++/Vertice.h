@@ -2,7 +2,7 @@
 #define VERTICE_H
 
 #include <iostream>
-#include "ListaDupla.h"
+#include "List.h"
 #include "Aresta.h"
 
 class Aresta;
@@ -13,19 +13,19 @@ class Vertice {
         int label;
         int grau;
         bool visitado;
-        ListaSimples<Aresta> *arestas;
+        List<Aresta> *arestas;
 
         // Metodos especiais
         Vertice() {
             this->label = 0;
-            this->arestas = new ListaSimples<Aresta>();
+            this->arestas = new List<Aresta>();
             this->grau = 0;
             this->visitado = false;
         }
 
         Vertice(int label) {
             this->label = label;
-            this->arestas = new ListaSimples<Aresta>();
+            this->arestas = new List<Aresta>();
             this->grau = 0;
             this->visitado = false;
         }
@@ -38,7 +38,7 @@ class Vertice {
             this->label = label;
         }
 
-        ListaSimples<Aresta>* getEdges() {
+        List<Aresta>* getEdges() {
             return this->arestas;
         }
 
@@ -56,6 +56,10 @@ class Vertice {
 
         void setVisitado(bool visited) {
             this->visitado = visited;
+        }
+
+        bool operator==(const Vertice &vertice) const {
+            return vertice.label == this->label;
         }
 };
 

@@ -1,8 +1,11 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors; 
 
 class Edge {
     private Vertex next;
+    private Vertex predecessor;
+    private Vertex successor;
     private double weight;
 
     Edge() {
@@ -23,6 +26,12 @@ class Edge {
         this.next = null;
     }
 
+    Edge(Vertex predecessor, Vertex successor, double weight) {
+        this.predecessor = predecessor;
+        this.successor = successor;
+        this.weight = weight;
+    }
+
     public double getWeight() {
         return this.weight;
     }
@@ -37,7 +46,23 @@ class Edge {
 
     public void setNext(Vertex destination) {
         this.next = destination;
-    } 
+    }
+
+    public void setPredecessor(Vertex predecessor) {
+        this.predecessor = predecessor;
+    }
+
+    public Vertex getPredecessor() {
+        return this.predecessor;
+    }
+
+    public void setSuccessor(Vertex successor) {
+        this.successor = successor;
+    }
+
+    public Vertex getSuccessor() {
+        return this.successor;
+    }
 }
 
 class Vertex {
@@ -47,6 +72,7 @@ class Vertex {
     private List<Edge> edges;
     private Vertex precedent;
     private double distance;
+    private int group;
 
     Vertex (int label) {
         this.label = label;
@@ -97,6 +123,14 @@ class Vertex {
 
     public Vertex getPrecedent() {
         return this.precedent;
+    }
+
+    public void setGroup(int group) {
+        this.group = group;
+    }
+
+    public int getGroup() {
+        return this.group;
     }
 }
 
@@ -165,6 +199,18 @@ class Graph  {
         }
     }
 
+    public void connectNew(int v1, int v2, double weight) {
+        if (this.weighted) {
+            // Search for vertexes, if they don't exist create them
+            Vertex aux1 = this.searchVertex(v1);
+            Vertex aux2 = this.searchVertex(v2);
+
+            this.connectVertexNew(aux1, aux2, weight);
+        } else {
+            System.out.println("[ERROR]: Unweighted graph, it's not necessary to pass a weight");
+        }
+    }
+
     public Vertex searchVertex(int v1) {
         for (int i = 0; i < this.vertexes.size(); i++) {
             // If it finds vertex within the list, it just returns it
@@ -192,6 +238,22 @@ class Graph  {
             if (!this.existAdjacent(v1, v2, peso)) {
                 v1.getEdges().add(new Edge(v2, peso));
                 v2.getEdges().add(new Edge(v1, peso));
+                v1.increaseDegree();
+                this.numberOfEdges++;
+            }
+        }
+    }
+
+    public void connectVertexNew(Vertex v1, Vertex v2, double peso) {
+        if (this.directed) {
+            if (!this.existAdjacentNew(v1, v2, peso)) {
+                v1.getEdges().add(new Edge(v1, v2, peso));
+                v1.increaseDegree();
+                this.numberOfEdges++;
+            }
+        } else {
+            if (!this.existAdjacentNew(v1, v2, peso)) {
+                v1.getEdges().add(new Edge(v1, v2, peso));
                 v1.increaseDegree();
                 this.numberOfEdges++;
             }
@@ -235,6 +297,23 @@ class Graph  {
             if (this.vertexes.get(i).getLabel() == v1.getLabel()) {
                 for (int j = 0; j < this.vertexes.get(i).getEdges().size(); j++) {
                     if (this.vertexes.get(i).getEdges().get(j).getNext().getLabel() == v2.getLabel()) {
+                        if (this.vertexes.get(i).getEdges().get(j).getWeight() == peso) {
+                            return true;
+                        }
+                    }
+                }
+                break;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean existAdjacentNew(Vertex v1, Vertex v2, double peso) {
+        for (int i = 0; i < this.vertexes.size(); i++) {
+            if (this.vertexes.get(i).getLabel() == v1.getLabel()) {
+                for (int j = 0; j < this.vertexes.get(i).getEdges().size(); j++) {
+                    if (this.vertexes.get(i).getEdges().get(j).getSuccessor().getLabel() == v2.getLabel()) {
                         if (this.vertexes.get(i).getEdges().get(j).getWeight() == peso) {
                             return true;
                         }
@@ -370,15 +449,61 @@ class Graph  {
             if (!this.existNegativeEdge()) {
                 this.setDistanceInfinity(); // Set all distances vertex to infinity
                 this.searchVertex(init).setDistance(0); // Set distance of initial vertex to 0;
-
-                List<Integer> vertexOpen = this.getLabels();
+                int smallerDistance = 0;
+                List<Vertex> vertexOpen = this.vertexes;
+                int i = 0;
+                int j = 0;
+                double predecessorValue = 0.0;
+                double weight = 0.0;
                 
                 while (vertexOpen.size() > 0) {
-                    
+                    for (i = 0; i < vertexOpen.size(); i++) {
+                        if (vertexOpen.get(i).getDistance() < smallerDistance) {
+                            smallerDistance = i;
+                        }
+                    } // Get smaller distance
+                    System.out.println("OIEE");
+                    System.out.println(i);
+                    System.out.println(smallerDistance);
+                    for (j = smallerDistance; j < vertexOpen.get(i).getEdges().size(); j++) {
+                        System.out.println("1");
+                        predecessorValue = this.vertexes.get(i).getDistance();
+                        System.out.println("2");
+                        weight = this.vertexes.get(i).getEdges().get(j).getWeight();
+                        System.out.println("3");
+                        this.vertexes.get(i).getEdges().get(j).getSuccessor().setDistance(predecessorValue + weight);
+                    }
+
+                    vertexOpen.get(i).setVisited(true);
+                    vertexOpen.remove(i);
+                    i = 0;
+
+                    System.out.println("oi");
                 }
             } else {
                 System.out.println("[ERROR]: The graph can't have edges with negative weights");
             }
+        } else {
+            System.out.println("[ERROR]: The graph isn't weighted");
+        }
+    }
+
+    public List<Edge> getEdges() {
+        List<Edge> edges = new ArrayList<Edge>();
+
+        for (int i = 0; i < this.numberOfVertex; i++) {
+            for (int j = 0; j < this.vertexes.get(i).getEdges().size(); j++) {
+                edges.add(this.vertexes.get(i).getEdges().get(j));
+            }
+        }
+
+        return edges;
+    }
+
+    public void Kruskal() {
+        if (this.weighted) {
+            List<Edge> edges = this.getEdges(); // Get list of edges and order
+
         } else {
             System.out.println("[ERROR]: The graph isn't weighted");
         }
@@ -388,17 +513,17 @@ class Graph  {
 public class GraphAdjacencyList {
     public static void main(String[] args) {
         // Params: (Directed, Weighted)
-        Graph graph = new Graph(true, true);
-        graph.connect(0, 1, 0.3);
-        graph.connect(0, 4, 0.2);
-        graph.connect(2, 4, 0.1);
-        graph.connect(2, 0, -0.4);
-        graph.connect(2, 3, 0.3);
-        graph.connect(4, 1, 0.6);
-        graph.connect(4, 5, 0.1);
-        graph.connect(3, 4, 0.2);
-        graph.connect(3, 5, 0.8);
-        graph.connect(5, 1, 0.5);
+        Graph graph = new Graph(false, true);
+        graph.connectNew(0, 1, 0.2);
+        graph.connectNew(0, 4, 0.1);
+        graph.connectNew(2, 4, 0.2);
+        graph.connectNew(2, 0, 0.4);
+        graph.connectNew(2, 3, 0.1);
+        graph.connectNew(4, 1, 0.3);
+        graph.connectNew(4, 5, 0.2);
+        graph.connectNew(3, 4, 0.1);
+        graph.connectNew(3, 5, 0.2);
+        graph.connectNew(5, 1, 0.4);
         
         graph.Dikjstra(0);
     }

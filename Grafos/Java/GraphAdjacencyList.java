@@ -524,7 +524,7 @@ public class GraphAdjacencyList {
         graph.connectNew(3, 4, 0.1);
         graph.connectNew(3, 5, 0.2);
         graph.connectNew(5, 1, 0.4);
-        
-        graph.Dikjstra(0);
+
+        graph.print();
     }
 }
